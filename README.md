@@ -52,3 +52,13 @@ Las ventajas que posee frente a BIOS y UEFI:
 * Arranque rapido, uno mas rapido y optimizado, lo que tambien lo vuelve mas eficiente.
 * Flexibilidad y personalizacion, es compatible con gran cantidad de hardware y su firmware es configurable a gusto del usuario.
 
+###¿Que es un linker? ¿que hace ? 
+Un linker es un programa que se utiliza en el proceso de compilación de programas de computadora. Este toma uno o mas archivos objeto, generados por un compilador o ensabmlador en el proceso de compilacion, y los combina para formar un archivo ejecutable o una biblioteca.
+
+![Linker svg](https://github.com/angeloff-07/SC_Practico-3_Modo_Protegido-/assets/84982752/c9b4a8a6-e63f-4a47-83d5-ddd6715afd2a)
+
+
+###¿Que es la dirección que aparece en el script del linker?¿Porqué es necesaria ?
+La dirección que aparece en el script del linker, denominada Load Address, es la ubicación de memoria donde se cargará el programa ejecutable o la biblioteca en la memoria del sistema cuando se ejecute. Hace falta esta direccion para asegurar que el programa se cargue correctamente y se ejecute sin conflictos con otras partes del sistema.
+
+
