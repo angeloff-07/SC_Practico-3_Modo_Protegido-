@@ -61,4 +61,6 @@ Un linker es un programa que se utiliza en el proceso de compilación de program
 ###¿Que es la dirección que aparece en el script del linker?¿Porqué es necesaria ?
 La dirección que aparece en el script del linker, denominada Load Address, es la ubicación de memoria donde se cargará el programa ejecutable o la biblioteca en la memoria del sistema cuando se ejecute. Hace falta esta direccion para asegurar que el programa se cargue correctamente y se ejecute sin conflictos con otras partes del sistema.
 
+###¿Para que se utiliza la opción --oformat binary en el linker?
+Lo que hace el linker con --oformat binary es generar un archivo binario puro, sin encabezados o estructura de formato de un archivo ejecutable. Esto nos permite interactuar de forma directa con el hardware mediante software binario, asi nos deja controlar directamente la disposicion de datos en memoria o cargar un bootloader mediante un archivo binario al iniciar el sistema.
 
