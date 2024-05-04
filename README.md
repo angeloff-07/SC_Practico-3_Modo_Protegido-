@@ -6,9 +6,6 @@
 * Joaquin Pary
 * Jorge Angeloff
 
-## Resumen
-
-
 ### ¿Qué es UEFI? ¿como puedo usarlo? Mencionar además una función a la que podría llamar usando esa dinámica.  
 
 La UEFI (Interfaz de Firmware Extensible Unificado) es una especificacion (conjunto de normas y directrices) que define una interfaz entre el sistema operativo y el firmware.
