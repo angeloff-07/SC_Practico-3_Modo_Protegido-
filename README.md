@@ -9,6 +9,7 @@
 ## Resumen
 
 ## Desafio UEFI y coreboot
+
 ### ¿Qué es UEFI? ¿como puedo usarlo? Mencionar además una función a la que podría llamar usando esa dinámica.  
 
 La UEFI (Interfaz de Firmware Extensible Unificado) es una especificacion (conjunto de normas y directrices) que define una interfaz entre el sistema operativo y el firmware.
@@ -67,4 +68,8 @@ La dirección que aparece en el script del linker, denominada Load Address, es l
 Esta opcion indica al linker que debe producir un archivo de salida en formato binario. En este caso, se esta ensamblando y enlazando un programa de arranque para el sector de arranque del BIOS, este formato es apropiado ya que el sector de arranque del DIO debe ser una imagen binaria.
 
 ## Desafio Modo Protegido
+
+###¿Para que se utiliza la opción --oformat binary en el linker?
+Lo que hace el linker con --oformat binary es generar un archivo binario puro, sin encabezados o estructura de formato de un archivo ejecutable. Esto nos permite interactuar de forma directa con el hardware mediante software binario, asi nos deja controlar directamente la disposicion de datos en memoria o cargar un bootloader mediante un archivo binario al iniciar el sistema.
+
 
