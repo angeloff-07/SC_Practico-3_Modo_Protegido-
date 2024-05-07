@@ -9,6 +9,7 @@
 ## Resumen
 
 ## Desafio UEFI y coreboot
+
 ### ¿Qué es UEFI? ¿como puedo usarlo? Mencionar además una función a la que podría llamar usando esa dinámica.  
 
 La UEFI (Interfaz de Firmware Extensible Unificado) es una especificacion (conjunto de normas y directrices) que define una interfaz entre el sistema operativo y el firmware.
@@ -72,3 +73,4 @@ Esta opcion indica al linker que debe producir un archivo de salida en formato b
 ### ¿Cómo sería un programa que tenga dos descriptores de memoria diferentes, uno para cada segmento (código y datos) en espacios de memoria diferenciados? 
 ### Cambiar los bits de acceso del segmento de datos para que sea de solo lectura,  intentar escribir, ¿Que sucede? ¿Que debería suceder a continuación? (revisar el teórico) Verificarlo con gdb
 ### En modo protegido, ¿Con qué valor se cargan los registros de segmento ? ¿Porque?
+
