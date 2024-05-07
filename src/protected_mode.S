@@ -1,7 +1,8 @@
 .code16
-    cli
+    cli             /* Deshabilita las interrupciones, necesario para evitar interrupciones mientras se inicicaliza el sistema */          
     ljmp $0, $1f
 1:
+    /* Pone en 0 todos los registros del segmento en 0 */
     xor %ax, %ax
     mov %ax, %ds
     mov %ax, %es
@@ -13,34 +14,37 @@
 
 .equ CODE_SEG, 8
 .equ DATA_SEG, gdt_data - gdt_start
-lgdt gdt_descriptor
 
+    lgdt gdt_descriptor
+
+    /* Setea en 1 el bit 0 de registro CR0, es decir habilita el protected_mode */
     mov %cr0, %eax
     orl $0x1, %eax
     mov %eax, %cr0
     ljmp $CODE_SEG, $protected_mode
 
-gdt_start:
+ /* Define la Global Descriptor Table (GDT) para el modo protegido */
+gdt_start: 
 gdt_null:
     .long 0x0
     .long 0x0
 gdt_code:
-    .word 0xffff
-    .word 0x0
-    .byte 0x0
-    .byte 0b10011010
-    .byte 0b11001111
-    .byte 0x0
+    .word 0xffff        /* Segment Limit 0:15 */
+    .word 0x0           /* Base Address 16:31 */
+    .byte 0x0           /* Base 16:23 */
+    .byte 0b10011010    /* Type = Code 010 (Execute/Read, accessed) - S = 1 (Descriptor Type Code or Data Segment) - SPL = 0 - P = 1 */
+    .byte 0b11001111    /* Segment Limit = 1111 - AVL = 0 - L = 0 - D/B = 1 - G = 1 */
+    .byte 0x0           /* Base 24:31 */
 gdt_data:
-    .word 0xffff
-    .word 0x0
-    .byte 0x0
-    .byte 0b10010010
-    .byte 0b11001111
-    .byte 0x0
+    .word 0xffff        /* Segment Limit 0:15 */
+    .word 0x0           /* Base Address 16:31 */
+    .byte 0x0           /* Base 16:23 */
+    .byte 0b10010010    /* Type = Data 010 (Execute/Read, accessed) - S = 1 (Descriptor Type Code or Data Segment) - SPL = 0 - P = 1 */
+    .byte 0b11001111    /* Segment Limit = 1111 - AVL = 0 - L = 0 - D/B = 1 - G = 1 */
+    .byte 0x0           /* Base 24:31 */
 gdt_end:
 gdt_descriptor:
-    .word gdt_end - gdt_start
+    .word gdt_end - gdt_start 
     .long gdt_start
 
 .code32
@@ -56,25 +60,29 @@ protected_mode:
     sgdt 0x7000
     
 vga_print:
-    mov $message, %ecx
-    mov $16, %eax
-    mov $0, %edx
-    mov $17, %ebx
-    div %ebx
-    mov %edx, %eax
-    mov $80, %edx
-    mul %edx
+    mov $message, %ecx                
+    mov $1280, %eax
+    /** 
+    * Cada linea tiene 2 * 80 caracteres ===> 80 * 2 = 160. Como se quiere imprimir en pantalla en la linea 9
+    * (9-1) * 160 = 1280 es la posicion en que deberia comenzar a imprimir 
+    */
     lea 0xb8000(%eax), %edx
-    mov $0x0F, %ah
+    /* Color de fondo y letra */
+    mov $0x2F, %ah
 loop:
-    mov (%ecx), %al
+    /** 
+    * Al princpio carga el primer caracter (h) para imprimir en pantalla, y luego incrementa 1 el registro ecx 
+    * para apuntar al siguente caracter y incrementa 2 el registro edx para apuntar a la siguente posicion en la pantalla vga
+    */
+    mov (%ecx), %al            
     cmp $0, %al
     jz end
-    mov %ax, (%edx)
+    mov %eax, (%edx)
     add $1, %ecx
     add $2, %edx
     jmp loop
 end:
     jmp .
 message:
-    .asciz "hello world" 
+    .asciz "hello world"   
+
