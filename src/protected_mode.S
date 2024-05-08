@@ -2,7 +2,7 @@
     cli             /* Deshabilita las interrupciones, necesario para evitar interrupciones mientras se inicicaliza el sistema */          
     ljmp $0, $1f
 1:
-    /* Pone en 0 todos los registros del segmento en 0 */
+    /* Pone en 0 todos los registros en 0 */
     xor %ax, %ax
     mov %ax, %ds
     mov %ax, %es
@@ -32,14 +32,14 @@ gdt_code:
     .word 0xffff        /* Segment Limit 0:15 */
     .word 0x0           /* Base Address 16:31 */
     .byte 0x0           /* Base 16:23 */
-    .byte 0b10011010    /* Type = Code 010 (Execute/Read, accessed) - S = 1 (Descriptor Type Code or Data Segment) - SPL = 0 - P = 1 */
+    .byte 0b10011010    /* Type = Code 010 (Execute/Read) - S = 1 (Descriptor Type Code or Data Segment) - SPL = 0 - P = 1 */
     .byte 0b11001111    /* Segment Limit = 1111 - AVL = 0 - L = 0 - D/B = 1 - G = 1 */
     .byte 0x0           /* Base 24:31 */
 gdt_data:
     .word 0xffff        /* Segment Limit 0:15 */
     .word 0x0           /* Base Address 16:31 */
     .byte 0x0           /* Base 16:23 */
-    .byte 0b10010010    /* Type = Data 010 (Execute/Read, accessed) - S = 1 (Descriptor Type Code or Data Segment) - SPL = 0 - P = 1 */
+    .byte 0b10010010    /* Type = Data 010 (Execute/Read) - S = 1 (Descriptor Type Code or Data Segment) - SPL = 0 - P = 1 */
     .byte 0b11001111    /* Segment Limit = 1111 - AVL = 0 - L = 0 - D/B = 1 - G = 1 */
     .byte 0x0           /* Base 24:31 */
 gdt_end:
