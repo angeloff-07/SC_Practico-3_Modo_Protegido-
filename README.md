@@ -79,6 +79,43 @@ Esta opcion indica al linker que debe producir un archivo de salida en formato b
 ## Modo Protegido
 
 ### Crea un codigo assembler que pueda pasar a modo protegido (sin macros)
+
+El codigo del archivo `protected_mode.S` se encarga del procedimiento necesario para que el sistema pase de modo real a modo protegido sin utilizar ningun tipo de macros.
+
+Despues de compilar el programa, analizamos el contenido de protected_mode.o con `objdump`, para obtener la direccion de la instruccion que escribe en el registro `cr0`.
+
+El siguiente paso fue establecer los breakpoints necesarios para poder censar el registro `cr0` tanto antes de su modificacion como luego de ser actualizado para pasar a modo protegido. Para esto utilizamos el archivo `gdb.gdb`, que contiene las instrucciones que ejecutara gdb al iniciarse.
+
+![protected_mode](/img/cr0_before_protected.png)
+
+Podemos ver que al momento de la instruccion `0x07c22`, al imprimir el registro obtenemos `$cr0 = [ ET ]`. Esto se debe a que al examinar el registro desde una sesion de depuracion, el registro no muestra los bits "crudos", si no que aparecen enmascarados en siglas que facilitan el analisis.
+
+Los valores posibles, mapeados a los bits correspondientes son los siguientes:
+
+| Bit | Mnemonic | Description          |
+|-----|----------|----------------------|
+| 0   | PE       | Protection Enable    |
+| 1   | MP       | Monitor Coprocessor  |
+| 2   | EM       | Emulation            |
+| 3   | TS       | Task Switched        |
+| 4   | ET       | Extension Type       |
+| 5   | NE       | Numeric Error        |
+| 16  | WP       | Write Protect        |
+| 18  | AM       | Alignment Mask       |
+| 29  | NW       | Not Write-through    |
+| 30  | CD       | Cache Disable        |
+| 31  | PG       | Paging               |
+
+Entonces, podemos concluir que al estar ausente la abreviatura PE, estamos en modo real.
+
+Como la instruccion de `0x07c22` corresponde a la que actualiza el `bit 0` del registro `cr0`, veremos que luego de su ejecucion estaremos efectivamente en modo protegido.
+
+![protected_mode](/img/cr0_after_protected1.png)
+
+Inmediatamente, vemos que en la instruccion `0x07c25` ya estamos en modo protegido, y `cr0` muestra el identificador `[PE]` (Protected Enable), lo que nos confirma que ahora estamos en modo protegido. Despues de esto, el programa continua su ejecucion con normalidad.
+
+![protected_mode](/img/cr0_after_protected2.png)
+
 ### ¿Cómo sería un programa que tenga dos descriptores de memoria diferentes, uno para cada segmento (código y datos) en espacios de memoria diferenciados? 
 Se podria realizar definiendo 2 tablas de descriptores:
 ```assembler
